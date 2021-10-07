@@ -5,7 +5,7 @@ const app = express()
 const port = process.env.PORT || 8000
 const fs = require('fs');
 
-app.get('/list', (req, res) => {
+app.get('/', (req, res) => {
     fs.readdir('tmp/', (err, files) => {
         return res.json(files)
     });
@@ -28,7 +28,7 @@ app.all('/add/*', (req, res) => {
         url: req.url,
         method: req.method,
         headers: req.headers,
-        body: req.body
+        body: req.json()
     });
 
     fs.appendFile(`tmp/${Math.floor(Date.now() / 1000)}.log`, content, err => {
@@ -44,7 +44,7 @@ app.all('/create/:id', (req, res) => {
         url: req.url,
         method: req.method,
         headers: req.headers,
-        body: req.body
+        body: req.json()
     });
 
     fs.appendFile(`tmp/${req.params.id}.log`, content, err => {
